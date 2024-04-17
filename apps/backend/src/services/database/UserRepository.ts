@@ -1,38 +1,44 @@
 import dotenv from "dotenv"
 dotenv.config()
 
-import { MongoClient, Db } from 'mongodb'
+import { MongoClient, Db, ObjectId, WithId } from 'mongodb'
+import { MongoDatabase } from "./config"
 
 const databaseUrl = process.env.DATABASE_URL || ''
 const databaseName = process.env.DATABASE_NAME
 
 type User = {
+    id: string
     name: string
 }
 
 interface UserRepositoryInterface {
     saveUser: (user: User) => Promise<void>
-    getUser: (id: string) => Promise<User>
+    getUserById: (id: string) => Promise<User | null>
 }
 
 export class UserRepository implements UserRepositoryInterface {
-    private client: MongoClient
-    public database: Db
+    static database: Db
 
     constructor() {
-        this.client = new MongoClient(databaseUrl)
-        this.database = this.client.db(databaseName)
-
-        this.client.connect()
+        UserRepository.database = new MongoDatabase().database
     }
 
-    public async saveUser(user: User) {
-        console.log('save')
-        //  await this.database.collection('users').insertOne(user)
+    public async saveUser(user: Omit<User, 'id'>) {
+        UserRepository.database.collection('users').insertOne(user)
     }
 
-    async getUser(id: string) {
-        const res = this.database.collection('users').findOne({ id })
-        console.log(res)
+    static changeIdKey(user: WithId<Omit<User, 'id'>>) {
+        const { _id, ...rest } = user
+        return { id: user._id.toHexString() as string, ...rest }
+    }
+
+    async getUserById(id: string) {
+        const userDoc = await UserRepository.database.collection('users').findOne({ _id: new ObjectId(id) })
+        if (!userDoc) return null
+
+        console.log(userDoc)
+
+        return UserRepository.changeIdKey(userDoc as WithId<User>)
     }
 }

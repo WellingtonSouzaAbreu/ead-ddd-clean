@@ -16,13 +16,14 @@ app.use(
 )
 
 app.get('/', async (req: Request, res: Response) => {
-    /*  const { database } = new MongoDatabase()
-     console.log(database.createCollection('teste')) */
-
-    const { saveUser } = new UserRepository()
-    await saveUser({ name: 'Test' })
-
     res.status(200).send('Source endpoint...')
+})
+
+app.get('/user/:id', async (req: Request, res: Response) => {
+    const { getUserById } = new UserRepository()
+    const userData = await getUserById(req.params.id)
+
+    res.status(200).send(userData)
 })
 
 const serverPort = process.env.SERVER_PORT || 3000
