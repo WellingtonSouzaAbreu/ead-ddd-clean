@@ -3,7 +3,6 @@ import express, { Request, Response } from "express"
 import { UserRepository } from './services/database/UserRepository'
 
 import dotenv from "dotenv"
-import { sayHello } from '@domain/auth'
 dotenv.config()
 const app = express()
 
@@ -24,7 +23,6 @@ app.get('/user/:id', async (req: Request, res: Response) => {
     const { getUserById } = new UserRepository()
     const userData = await getUserById(req.params.id)
 
-    console.log(sayHello)
     res.status(200).send(userData)
 })
 

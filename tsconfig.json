@@ -7,7 +7,7 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"outDir": "./dist",
-		"baseUrl": ".",
+		"baseUrl": "." /* ,
 		"paths": {
 			"@domain/*": [
 				"domain/*"
@@ -18,6 +18,6 @@
 			"@backend/*": [
 				"apps/backend/*"
 			]
-		}
+		} */
 	}
 }
