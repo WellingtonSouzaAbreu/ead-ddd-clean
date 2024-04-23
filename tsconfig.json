@@ -7,6 +7,9 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"outDir": "./dist",
+		"types": [
+			"node"
+		],
 		"baseUrl": "." /* ,
 		"paths": {
 			"@domain/*": [
