@@ -9,8 +9,7 @@
 		"outDir": "./dist",
 		"types": [
 			"node"
-		],
-		"baseUrl": "." /* ,
+		] /* ,
 		"paths": {
 			"@domain/*": [
 				"domain/*"

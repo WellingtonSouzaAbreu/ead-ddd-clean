@@ -29,4 +29,8 @@ export class Terminal {
     static success(text: string) {
         terminal.green(`\n${text}`)
     }
+
+    static error(text: string) {
+        terminal.red(`\n${text}`)
+    }
 }
